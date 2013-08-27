@@ -756,6 +756,16 @@ function gettop
     fi
 }
 
+function getopddir()
+{
+    T=$(gettop)
+    if [ "$T" ]; then
+        echo "$T/OpenPDroid"
+    else
+        echo "Couldn't locate the top of the tree.  Try setting TOP."
+    fi
+}
+
 function m()
 {
     T=$(gettop)
