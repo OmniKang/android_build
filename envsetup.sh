@@ -760,6 +760,7 @@ function getopddir()
 {
     T=$(gettop)
     if [ "$T" ]; then
+        T=$(sed 's%/[^/]*$%%' <<< $T)
         echo "$T/OpenPDroid"
     else
         echo "Couldn't locate the top of the tree.  Try setting TOP."
