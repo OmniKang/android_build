@@ -171,13 +171,18 @@ def add_to_manifest(repositories, fallback_branch = None):
         repo_target = repository['target_path']
         rom = None
         
-        # Check if repo exists in CyanKang repo tree
-        req = urllib.request.Request("https://github.com/CyanKang/%s" % repo_name)
-        try:
-            urllib.request.urlopen(req)
-            rom = 'CyanKang'
-        except urllib.error.HTTPError as e:
-            rom = 'CyanogenMod'
+        if "/" in repo_name:
+            seperator = repo_name.find('/')
+            rom = repo_name[0:seperator]
+            repo_name = repo_name.replace(rom + '/', '')
+        else:
+            # Check if repo exists in CyanKang repo tree
+            req = urllib.request.Request("https://github.com/CyanKang/%s" % repo_name)
+            try:
+                urllib.request.urlopen(req)
+                rom = 'CyanKang'
+            except urllib.error.HTTPError as e:
+                rom = 'CyanogenMod'
         
         
         if exists_in_tree(lm, repo_name):
