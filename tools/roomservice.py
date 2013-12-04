@@ -37,13 +37,12 @@ except ImportError:
 default_rem = "github"
 # set this to the default revision to use (branch/tag name)
 default_rev = "android-4.4"
-# set this to the remote that you use for projects from your team repos
-# example fetch="https://github.com/omnirom"
-default_team_rem = "omnirom"
 # this shouldn't change unless google makes changes
 local_manifest_dir = ".repo/local_manifests"
 # change this to your name on github (or equivalent hosting)
-android_team = "omnirom"
+android_team = "OmniKang"
+# change this to the name of the origin team on github (or equivalent hosting)
+android_team_origin = "omnirom"
 
 
 def check_repo_exists(git_data):
@@ -54,8 +53,21 @@ def check_repo_exists(git_data):
 
 # Note that this can only be done 5 times per minute
 def search_github_for_device(device):
+    try:
+        git_data = search_github_for_device_get_data(device, android_team)
+        check_repo_exists(git_data)
+        print("found the {} device repo from {}".format(device, android_team))
+    except:
+        git_data = search_github_for_device_get_data(device, android_team_origin)
+        check_repo_exists(git_data)
+        print("found the {} device repo from {}".format(device, android_team_origin))
+
+    return git_data
+
+
+def search_github_for_device_get_data(device, team):
     git_search_url = "https://api.github.com/search/repositories" \
-                     "?q=%40{}+android_device+{}".format(android_team, device)
+                     "?q=%40{}+android_device+{}".format(team, device)
     git_req = urllib.request.Request(git_search_url)
     # this api is a preview at the moment. accept the custom media type
     git_req.add_header('Accept', 'application/vnd.github.preview')
@@ -65,16 +77,32 @@ def search_github_for_device(device):
         raise Exception("There was an issue connecting to github."
                         " Please try again in a minute")
     git_data = json.load(response)
-    check_repo_exists(git_data)
-    print("found the {} device repo".format(device))
+
     return git_data
+
+
+def get_device_team(git_data):
+    device_team = ""
+    for item in git_data['items']:
+        full_name = item.get('full_name')
+        team = full_name.split('/')[0]
+        if "{}/android_device".format(team) in full_name:
+            if temp_url.endswith(device):
+                device_team = team
+                break
+
+    if device_team:
+        return device_team
+    raise Exception("{} not found in {} Github, exiting "
+                    "roomservice".format(device, team))
 
 
 def get_device_url(git_data):
     device_url = ""
     for item in git_data['items']:
+        team = item.get('full_name').split('/')[0]
         temp_url = item.get('html_url')
-        if "{}/android_device".format(android_team) in temp_url:
+        if "{}/android_device".format(team) in temp_url:
             try:
                 temp_url = temp_url[temp_url.index("android_device"):]
             except ValueError:
@@ -87,7 +115,7 @@ def get_device_url(git_data):
     if device_url:
         return device_url
     raise Exception("{} not found in {} Github, exiting "
-                    "roomservice".format(device, android_team))
+                    "roomservice".format(device, team))
 
 
 def parse_device_directory(device_url):
@@ -263,11 +291,12 @@ def fetch_device(device):
         print("WARNING: Trying to fetch a device that's already there")
         return
     git_data = search_github_for_device(device)
+    device_team = get_device_team(git_data)
     device_url = get_device_url(git_data)
     device_dir = parse_device_directory(device_url)
     project = create_manifest_project(device_url,
                                       device_dir,
-                                      remote=default_team_rem)
+                                      remote=device_team)
     if not project is None:
         manifest = append_to_manifest(project)
         write_to_manifest(manifest)
