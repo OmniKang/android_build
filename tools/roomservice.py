@@ -87,7 +87,7 @@ def get_device_team(git_data):
         full_name = item.get('full_name')
         team = full_name.split('/')[0]
         if "{}/android_device".format(team) in full_name:
-            if temp_url.endswith(device):
+            if full_name.endswith(device):
                 device_team = team
                 break
 
