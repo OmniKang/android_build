@@ -245,7 +245,7 @@ def parse_dependency_file(location):
     return dependencies
 
 
-def create_dependency_manifest(dependencies):
+def create_dependency_manifest(dependencies, team):
     projects = []
     for dependency in dependencies:
         repository = dependency.get("repository")
@@ -257,7 +257,7 @@ def create_dependency_manifest(dependencies):
         # only apply this to github
         if remote == "github":
             if not "/" in repository:
-                repository = '/'.join([android_team, repository])
+                repository = '/'.join([team, repository])
         project = create_manifest_project(repository,
                                           target_path,
                                           remote=remote,
@@ -270,13 +270,13 @@ def create_dependency_manifest(dependencies):
         os.system("repo sync -f --no-clone-bundle %s" % " ".join(projects))
 
 
-def fetch_dependencies(device):
+def fetch_dependencies(device, team):
     location = parse_device_from_folder(device)
     if location is None or not os.path.isdir(location):
         raise Exception("ERROR: could not find your device "
                         "folder location, bailing out")
     dependencies = parse_dependency_file(location)
-    create_dependency_manifest(dependencies)
+    create_dependency_manifest(dependencies, team)
 
 
 def check_device_exists(device):
@@ -302,6 +302,7 @@ def fetch_device(device):
         write_to_manifest(manifest)
         print("syncing the device config")
         os.system('repo sync -f --no-clone-bundle %s' % device_dir)
+    return device_team
 
 
 if __name__ == '__main__':
@@ -320,5 +321,8 @@ if __name__ == '__main__':
         deps_only = False
 
     if not deps_only:
-        fetch_device(device)
-    fetch_dependencies(device)
+        team = fetch_device(device)
+    else:
+        git_data = search_github_for_device(device)
+        team = get_device_team(git_data)
+    fetch_dependencies(device, team)
