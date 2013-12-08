@@ -34,7 +34,7 @@ except ImportError:
 
 # Config
 # set this to the default remote to use in repo
-default_rem = "github"
+default_rem = "omnirom"
 # set this to the default revision to use (branch/tag name)
 default_rev = "android-4.4"
 # this shouldn't change unless google makes changes
@@ -118,10 +118,12 @@ def get_device_url(git_data):
                     "roomservice".format(device, team))
 
 
-def parse_device_directory(device_url):
+def parse_device_directory(device_url,device):
     to_strip = "android_device"
     repo_name = device_url[device_url.index(to_strip) + len(to_strip):]
+    repo_name = repo_name[:repo_name.index(device)]
     repo_dir = repo_name.replace("_", "/")
+    repo_dir = repo_dir + device
     return "device{}".format(repo_dir)
 
 
@@ -293,7 +295,7 @@ def fetch_device(device):
     git_data = search_github_for_device(device)
     device_team = get_device_team(git_data)
     device_url = get_device_url(git_data)
-    device_dir = parse_device_directory(device_url)
+    device_dir = parse_device_directory(device_url,device)
     project = create_manifest_project(device_url,
                                       device_dir,
                                       remote=device_team)
