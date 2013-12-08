@@ -34,7 +34,7 @@ except ImportError:
 
 # Config
 # set this to the default remote to use in repo
-default_rem = "omnirom"
+default_rem = "github"
 # set this to the default revision to use (branch/tag name)
 default_rev = "android-4.4"
 # this shouldn't change unless google makes changes
