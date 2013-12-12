@@ -67,7 +67,7 @@ def search_github_for_device(device):
 
 def search_github_for_device_get_data(device, team):
     git_search_url = "https://api.github.com/search/repositories" \
-                     "?q=%40{}+android_device+{}".format(team, device)
+                     "?q=%40{}+android_device+{}+fork:true".format(team, device)
     git_req = urllib.request.Request(git_search_url)
     # this api is a preview at the moment. accept the custom media type
     git_req.add_header('Accept', 'application/vnd.github.preview')
