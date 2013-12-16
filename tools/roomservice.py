@@ -45,21 +45,25 @@ android_team = "OmniKang"
 android_team_origin = "omnirom"
 
 
-def check_repo_exists(git_data):
+def check_repo(git_data, device, team):
+    full_name = git_data.get('items')[0].get('full_name')
     if not int(git_data.get('total_count', 0)):
         raise Exception("{} not found in {} Github, exiting "
-                        "roomservice".format(device, android_team))
+                        "roomservice".format(device, team))
+    elif not full_name.endswith(device):
+        raise Exception("{} not found in {} Github, exiting "
+                        "roomservice".format(device, team))
 
 
 # Note that this can only be done 5 times per minute
 def search_github_for_device(device):
     try:
         git_data = search_github_for_device_get_data(device, android_team)
-        check_repo_exists(git_data)
+        check_repo(git_data, device, android_team)
         print("found the {} device repo from {}".format(device, android_team))
     except:
         git_data = search_github_for_device_get_data(device, android_team_origin)
-        check_repo_exists(git_data)
+        check_repo(git_data, device, android_team_origin)
         print("found the {} device repo from {}".format(device, android_team_origin))
 
     return git_data
