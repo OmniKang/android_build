@@ -40,7 +40,7 @@ default_rev = "android-4.4"
 # this shouldn't change unless google makes changes
 local_manifest_dir = ".repo/local_manifests"
 # change this to your name on github (or equivalent hosting)
-android_team = "OmniKang"
+android_team = "omnikang"
 # change this to the name of the origin team on github (or equivalent hosting)
 android_team_origin = "omnirom"
 
