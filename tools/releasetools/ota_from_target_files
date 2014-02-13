@@ -474,26 +474,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Print("#                                     #");
   script.Print("#######################################");
 
-
-  /*
-  script.Print("                   MMM                 ");
-  script.Print("                 MMMMMMMM              ");
-  script.Print("               MMMMMMMMMM     7        ");
-  script.Print("              MMMMMMMMMMMMM    MM      ");
-  script.Print("            NMMMMMMMMMMMMMMN    MMMMM  ");
-  script.Print("           MMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-  script.Print("         DMMMMMMMMMMMMMMMMMMMMMMM      ");
-  script.Print("        MMMMDMMMMMMMMMMMMMMMMMMM       ");
-  script.Print("     ZMMM7       MMMMMMMMMMMMMM        ");
-  script.Print("MMMMMMMMI          IMMMMI   M          ");
-  script.Print(" IMMI                MMM   IM          ");
-  script.Print("                     MM  MM            ");
-  script.Print("                     7M                ");
-  script.Print("                      MM               ");
-  script.Print("   by finnq & Schubi   M               ");
-  script.Print("                       MMMMMMMMN       ");
-  */
-
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
 
