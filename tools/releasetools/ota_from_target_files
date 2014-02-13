@@ -463,8 +463,36 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Print("#  \ \ \_\ \ \ \_/\ \ \ \`\ \ \_\ \__ #");
   script.Print("#   \ \_____\ \_\, \_\ \_\ \_\/\_____\#");
   script.Print("#    \/_____/\/_/ \/_/\/_/\/_/\/_____/#");
+  script.Print("#             _   __                  #");
+  script.Print("#            | | / /                  #");
+  script.Print("#            | |/ /  __ _ _ __   __ _ #");
+  script.Print("#            |    \ / _` | '_ \ / _` |#");
+  script.Print("# _   _   _  | |\  \ (_| | | | | (_| |#");
+  script.Print("#(_) (_) (_) \_| \_/\__,_|_| |_|\__, |#");
+  script.Print("#                                __/ |#");
+  script.Print("#       by finnq & Schubi       |___/ #");
   script.Print("#                                     #");
   script.Print("#######################################");
+
+
+  /*
+  script.Print("                   MMM                 ");
+  script.Print("                 MMMMMMMM              ");
+  script.Print("               MMMMMMMMMM     7        ");
+  script.Print("              MMMMMMMMMMMMM    MM      ");
+  script.Print("            NMMMMMMMMMMMMMMN    MMMMM  ");
+  script.Print("           MMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+  script.Print("         DMMMMMMMMMMMMMMMMMMMMMMM      ");
+  script.Print("        MMMMDMMMMMMMMMMMMMMMMMMM       ");
+  script.Print("     ZMMM7       MMMMMMMMMMMMMM        ");
+  script.Print("MMMMMMMMI          IMMMMI   M          ");
+  script.Print(" IMMI                MMM   IM          ");
+  script.Print("                     MM  MM            ");
+  script.Print("                     7M                ");
+  script.Print("                      MM               ");
+  script.Print("   by finnq & Schubi   M               ");
+  script.Print("                       MMMMMMMMN       ");
+  */
 
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
